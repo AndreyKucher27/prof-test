@@ -37,7 +37,8 @@ const bachelorCategories: Category[] = [
     color: "green",
   },
   {
-    title: "Математическое обеспечение и администрирование информационных систем",
+    title:
+      "Математическое обеспечение и администрирование информационных систем",
     shortTitle: "МОАИС",
     match: ["МОАИС"],
     description:
@@ -164,7 +165,7 @@ function StartScreen({
 
   return (
     <div className="container start-screen program-start-screen">
-      <button className="back-link" onClick={onBack}>
+      <button type="button" className="back-link" onClick={onBack}>
         ← Назад к выбору уровня
       </button>
 
@@ -199,11 +200,6 @@ function StartScreen({
           <strong>{questionsCount}</strong>
           <span>вопросов</span>
         </div>
-
-        <div className="hero-stat">
-          <strong>AI</strong>
-          <span>рекомендации</span>
-        </div>
       </div>
 
       <div className={`program-showcase ${openedCategory ? "with-panel" : ""}`}>
@@ -218,6 +214,7 @@ function StartScreen({
 
             return (
               <button
+                type="button"
                 ref={isActive ? activeDirectionRef : null}
                 className={`direction-card ${isActive ? "active" : ""}`}
                 key={category.title}
@@ -256,6 +253,7 @@ function StartScreen({
               </div>
 
               <button
+                type="button"
                 className="panel-close"
                 onClick={closeProfilesPanel}
                 aria-label="Закрыть список профилей"
@@ -286,7 +284,7 @@ function StartScreen({
         )}
       </div>
 
-      <button className="button hero-button" onClick={onStart}>
+      <button type="button" className="button hero-button" onClick={onStart}>
         Пройти тест
       </button>
     </div>

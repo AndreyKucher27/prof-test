@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { useInView } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 
 import {
   PolarAngleAxis,
@@ -30,6 +30,10 @@ function InterestRadarChart({ interestProfile }: InterestRadarChartProps) {
     value: isInView ? interest.percent : 0,
   }));
 
+  const sortedInterestProfile = [...interestProfile].sort(
+    (a, b) => b.percent - a.percent
+  );
+
   return (
     <div className="radar-card simple-radar-card" ref={radarRef}>
       <div className="radar-header simple-radar-header">
@@ -47,7 +51,7 @@ function InterestRadarChart({ interestProfile }: InterestRadarChartProps) {
         </div>
       </div>
 
-      <div className="radar-wrapper simple-radar-wrapper">
+      <div className="radar-wrapper simple-radar-wrapper desktop-radar-chart">
         <ResponsiveContainer width="100%" height="100%">
           <RadarChart data={chartData}>
             <PolarGrid />
@@ -88,7 +92,42 @@ function InterestRadarChart({ interestProfile }: InterestRadarChartProps) {
         </ResponsiveContainer>
       </div>
 
-      <div className="radar-simple-legend">
+      <div className="mobile-interest-profile">
+        {sortedInterestProfile.map((interest, index) => (
+          <motion.div
+            className="mobile-interest-row"
+            key={interest.name}
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.45 }}
+            transition={{
+              duration: 0.3,
+              delay: index * 0.05,
+              ease: "easeOut",
+            }}
+          >
+            <div className="mobile-interest-top">
+              <span>{interest.name}</span>
+              <strong>{interest.percent}%</strong>
+            </div>
+
+            <div className="mobile-interest-bar">
+              <motion.div
+                initial={{ width: 0 }}
+                whileInView={{ width: `${interest.percent}%` }}
+                viewport={{ once: true, amount: 0.6 }}
+                transition={{
+                  duration: 0.8,
+                  delay: 0.1 + index * 0.05,
+                  ease: "easeOut",
+                }}
+              />
+            </div>
+          </motion.div>
+        ))}
+      </div>
+
+      <div className="radar-simple-legend desktop-radar-legend">
         <span>
           <i />
           Ваш профиль интересов

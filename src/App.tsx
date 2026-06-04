@@ -52,7 +52,7 @@ function App() {
   const [savedResultId, setSavedResultId] = useState<string | null>(null);
   const [isSavingResult, setIsSavingResult] = useState(false);
 
-  const isAdminPage = window.location.pathname === "/admin";
+  const isAdminPage = window.location.pathname.endsWith("/admin");
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -97,7 +97,13 @@ function App() {
   const prevQuestion = () => {
     if (currentQuestion > 0) {
       setCurrentQuestion(currentQuestion - 1);
+      return;
     }
+
+    setTestStarted(false);
+    setShowReview(false);
+    setShowResults(false);
+    setCurrentQuestion(0);
   };
 
   const handleShowResults = async () => {
@@ -185,19 +191,17 @@ function App() {
             transition={{ duration: 0.35, ease: "easeOut" }}
           >
             {educationLevel && (
-<ResultsScreen
-  results={results}
-  interestProfile={interestProfile}
-  educationLevel={educationLevel}
-  answers={answers}
-  onRestart={restartTest}
-/>
+              <ResultsScreen
+                results={results}
+                interestProfile={interestProfile}
+                educationLevel={educationLevel}
+                answers={answers}
+                onRestart={restartTest}
+              />
             )}
 
             {isSavingResult && (
-              <div style={{ display: "none" }}>
-                Сохранение результата...
-              </div>
+              <div style={{ display: "none" }}>Сохранение результата...</div>
             )}
 
             {savedResultId && (

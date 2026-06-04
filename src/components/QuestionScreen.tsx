@@ -24,32 +24,24 @@ function QuestionScreen({
 }: QuestionScreenProps) {
   return (
     <div className="container">
-      <h1 className="title">
-        Профориентационный тест ФКТиПМ
-      </h1>
+      <h1 className="title">Профориентационный тест ФКТиПМ</h1>
 
       <div className="progress-info">
         <span>
-          Вопрос {currentQuestion + 1} из{" "}
-          {totalQuestions}
+          Вопрос {currentQuestion + 1} из {totalQuestions}
         </span>
 
         <span>{Math.round(progress)}%</span>
       </div>
 
       <div className="progress">
-        <div
-          className="progress-fill"
-          style={{ width: `${progress}%` }}
-        />
+        <div className="progress-fill" style={{ width: `${progress}%` }} />
       </div>
 
       <div className="question-card">
         <h2 className="question">{question}</h2>
 
-        <div className="answer-value">
-          {currentAnswer}
-        </div>
+        <div className="answer-value">{currentAnswer}</div>
 
         <input
           type="range"
@@ -57,11 +49,7 @@ function QuestionScreen({
           max="10"
           value={currentAnswer}
           className="slider"
-          onChange={(event) =>
-            onAnswerChange(
-              Number(event.target.value)
-            )
-          }
+          onChange={(event) => onAnswerChange(Number(event.target.value))}
         />
 
         <div className="scale">
@@ -72,26 +60,16 @@ function QuestionScreen({
       </div>
 
       <div className="buttons">
-        <button
-          className="button secondary"
-          onClick={onPrev}
-          disabled={currentQuestion === 0}
-        >
+        <button type="button" className="button secondary" onClick={onPrev}>
           Назад
         </button>
 
         {currentQuestion === totalQuestions - 1 ? (
-          <button
-            className="button"
-            onClick={onFinish}
-          >
+          <button type="button" className="button" onClick={onFinish}>
             Показать результат
           </button>
         ) : (
-          <button
-            className="button"
-            onClick={onNext}
-          >
+          <button type="button" className="button" onClick={onNext}>
             Следующий вопрос
           </button>
         )}
