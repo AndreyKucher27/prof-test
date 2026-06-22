@@ -44,6 +44,7 @@ const warningTexts: Record<InterestKey, string> = {
     "направление ориентировано на создание решений и продуктов, поэтому важны практическое мышление и интерес к результату",
 };
 
+/*
 function calculateDistanceSimilarity(
   userVector: Record<InterestKey, number>,
   programVector: Record<InterestKey, number>
@@ -58,6 +59,7 @@ function calculateDistanceSimilarity(
 
   return 100 - (totalDifference / maxDifference) * 100;
 }
+*/
 
 function calculateCosineSimilarity(
   userVector: Record<InterestKey, number>,
@@ -88,6 +90,7 @@ function calculateCosineSimilarity(
   return (dotProduct / (userMagnitude * programMagnitude)) * 100;
 }
 
+/*
 function calculateHybridSimilarity(
   userVector: Record<InterestKey, number>,
   programVector: Record<InterestKey, number>
@@ -103,6 +106,7 @@ function calculateHybridSimilarity(
 
   return Math.round(finalSimilarity);
 }
+*/
 
 function createUserVector(
   answers: number[],
@@ -184,10 +188,9 @@ if (!programVectorData) {
   };
 }
 
-    const percent = calculateHybridSimilarity(
-      userVector,
-      programVectorData.vector
-    );
+const percent = Math.round(
+  calculateCosineSimilarity(userVector, programVectorData.vector)
+);
 
 return {
   name: program.name,
