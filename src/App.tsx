@@ -72,13 +72,19 @@ function App() {
 
   const progress = ((currentQuestion + 1) / activeQuestions.length) * 100;
 
-  const results = calculateResults(
-    answers,
-    activePrograms,
-    activeProgramVectors
-  );
+const selectedEducationLevel = educationLevel ?? "bachelor";
 
-  const interestProfile = calculateInterestProfile(answers);
+const results = calculateResults(
+  answers,
+  activePrograms,
+  activeProgramVectors,
+  selectedEducationLevel
+);
+
+const interestProfile = calculateInterestProfile(
+  answers,
+  selectedEducationLevel
+);
 
   const changeAnswer = (value: number) => {
     const newAnswers = [...answers];

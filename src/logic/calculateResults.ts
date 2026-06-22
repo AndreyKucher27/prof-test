@@ -3,7 +3,10 @@ import type { Result } from "../types/result";
 import type { InterestKey } from "../types/interest";
 import type { ProgramVector } from "../types/programVector";
 
-import { calculateInterestProfile } from "./calculateInterestProfile";
+import {
+  calculateInterestProfile,
+  type EducationLevel,
+} from "./calculateInterestProfile";
 
 const interestNames: Record<InterestKey, string> = {
   math: "математике",
@@ -101,8 +104,11 @@ function calculateHybridSimilarity(
   return Math.round(finalSimilarity);
 }
 
-function createUserVector(answers: number[]): Record<InterestKey, number> {
-  const interestProfile = calculateInterestProfile(answers);
+function createUserVector(
+  answers: number[],
+  educationLevel: EducationLevel
+): Record<InterestKey, number> {
+  const interestProfile = calculateInterestProfile(answers, educationLevel);
 
   return interestProfile.reduce((vector, interest) => {
     vector[interest.key] = interest.percent;
@@ -157,9 +163,10 @@ function getWarnings(
 export function calculateResults(
   answers: number[],
   programs: Program[],
-  programVectors: ProgramVector[]
+  programVectors: ProgramVector[],
+  educationLevel: EducationLevel
 ): Result[] {
-  const userVector = createUserVector(answers);
+  const userVector = createUserVector(answers, educationLevel);
 
   const results = programs.map((program) => {
     const programVectorData = programVectors.find(
