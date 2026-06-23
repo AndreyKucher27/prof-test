@@ -110,7 +110,7 @@ const masterInterestRules: InterestRule[] = [
   {
     key: "research",
     name: "Исследовательская деятельность",
-    questionIndexes: [0, 1, 2],
+    questionIndexes: [0, 1, 2, 11],
   },
   {
     key: "product",
