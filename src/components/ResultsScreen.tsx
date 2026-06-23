@@ -30,6 +30,45 @@ function ResultsScreen({
   const bestReasons = bestResult?.reasons.slice(0, 4) ?? [];
   const alternativeResults = results.slice(1);
 
+
+  const maxAnswer = Math.max(...answers);
+const minAnswer = Math.min(...answers);
+const answerSpread = maxAnswer - minAnswer;
+
+const averageAnswer =
+  answers.reduce((sum, answer) => sum + answer, 0) / answers.length;
+
+const hasLowDifferentiation = answerSpread <= 2;
+const hasVeryLowAverage = averageAnswer <= 2;
+const hasNeutralAverage = averageAnswer >= 4 && averageAnswer <= 6;
+const hasVeryHighAverage = averageAnswer >= 8;
+
+const shouldShowPreliminaryWarning =
+  hasLowDifferentiation || hasVeryLowAverage || hasNeutralAverage;
+
+let warningTitle = "Результат следует воспринимать как предварительный";
+
+let warningText =
+  "Ваши ответы имеют небольшой разброс или находятся близко к средним значениям. Это может означать, что интересы выражены недостаточно явно, поэтому рекомендацию лучше использовать как первичный ориентир, а не как окончательный выбор образовательной программы.";
+
+if (hasVeryLowAverage) {
+  warningTitle = "Интересы выражены слабо";
+
+  warningText =
+    "Большинство ответов имеют низкие значения. Это может означать, что пользователь пока не видит выраженного интереса к представленным направлениям. В таком случае результат стоит воспринимать особенно осторожно и дополнить его самостоятельным изучением программ или консультацией с представителями факультета.";
+} else if (hasVeryHighAverage && hasLowDifferentiation) {
+  warningTitle = "Интерес выражен почти ко всем областям";
+
+  warningText =
+    "Большинство ответов имеют высокие значения и почти не отличаются друг от друга. Это означает, что пользователю интересны разные направления, но система не может достаточно точно выделить приоритетные области. Рекомендацию стоит рассматривать как один из возможных ориентиров.";
+} else if (hasNeutralAverage || hasLowDifferentiation) {
+  warningTitle = "Профиль интересов выражен недостаточно явно";
+
+  warningText =
+    "Ответы имеют небольшой разброс или находятся около средних значений. Это может означать, что пользователь пока не выделил для себя явные приоритеты. Поэтому рекомендацию лучше использовать как предварительный ориентир.";
+}
+
+
   return (
     <div className="container results-page redesigned-results">
       <div className="results-hero-header">
@@ -59,6 +98,16 @@ function ResultsScreen({
           </div>
         </section>
       )}
+
+      {shouldShowPreliminaryWarning && (
+  <section className="result-reasons-panel">
+    <div className="section-mini-header">
+      <span>Важно</span>
+      <h2>{warningTitle}</h2>
+      <p>{warningText}</p>
+    </div>
+  </section>
+)}
 
       {bestReasons.length > 0 && (
         <section className="result-reasons-panel">
