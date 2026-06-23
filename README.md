@@ -1,73 +1,106 @@
-# React + TypeScript + Vite
+# Профориентационная рекомендательная система
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Веб-сайт для первичной профориентационной поддержки абитуриентов факультета компьютерных технологий и прикладной математики.
 
-Currently, two official plugins are available:
+Система позволяет пользователю выбрать уровень обучения, пройти профориентационный тест, получить рекомендации по образовательным программам факультета, просмотреть пояснение результата и сохранить отчёт. Для администратора реализована панель просмотра сохранённых результатов, статистики, графиков, фильтрации и экспорта данных.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Основные возможности
 
-## React Compiler
+* выбор уровня обучения: бакалавриат или магистратура;
+* просмотр направлений и профилей подготовки;
+* прохождение теста из 12 утверждений по шкале от 0 до 10;
+* формирование профиля интересов пользователя;
+* расчёт рекомендаций на основе косинусного сходства;
+* отображение основной рекомендации и дополнительных подходящих вариантов;
+* пояснение причин рекомендации;
+* сохранение результатов прохождения в Supabase;
+* экспорт результата в PDF и HTML;
+* административная панель со статистикой, графиками, фильтрами и экспортом CSV;
+* адаптивная вёрстка для компьютеров и мобильных устройств.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Технологии
 
-## Expanding the ESLint configuration
+Проект разработан с использованием следующих технологий:
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+* React;
+* TypeScript;
+* Vite;
+* Supabase;
+* Recharts;
+* Framer Motion;
+* jsPDF;
+* html2canvas;
+* CSS.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Структура проекта
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+Основной код приложения расположен в каталоге `src`.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```text
+src/
+├── components/   # компоненты интерфейса
+├── data/         # вопросы, программы и векторы программ
+├── logic/        # расчёт профиля интересов и рекомендаций
+├── services/     # работа с Supabase и экспортом данных
+├── types/        # TypeScript-типы
+├── lib/          # конфигурация Supabase
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Запуск проекта
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Для запуска проекта необходимо установить зависимости:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
 ```
+
+После установки зависимостей запустить проект в режиме разработки:
+
+```bash
+npm run dev
+```
+
+После запуска сайт будет доступен в браузере по адресу, который отобразится в терминале.
+
+## Сборка проекта
+
+Для создания production-сборки используется команда:
+
+```bash
+npm run build
+```
+
+Собранные файлы будут размещены в каталоге:
+
+```text
+dist/
+```
+
+## Проверка TypeScript
+
+Для проверки проекта на ошибки типизации можно выполнить команду:
+
+```bash
+npx tsc -b
+```
+
+## Настройка Supabase
+
+Для работы с Supabase необходимо создать файл `.env.local` и указать в нём параметры проекта:
+
+```env
+VITE_SUPABASE_URL=your_supabase_url
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+```
+
+Файл `.env.local` не должен публиковаться в открытом репозитории. Для примера настроек можно использовать файл `.env.example`.
+
+## Назначение проекта
+
+Разработанная система предназначена для помощи абитуриентам при выборе образовательной программы факультета. Она не заменяет консультацию с представителями факультета и самостоятельное изучение учебных планов, но помогает получить первичный ориентир на основе интересов пользователя.
+
+## Автор
+
+Кучер Андрей Сергеевич
+Выпускная квалификационная работа
+Направление подготовки: 09.03.03 Прикладная информатика
