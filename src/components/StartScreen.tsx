@@ -110,8 +110,8 @@ function StartScreen({
 }: StartScreenProps) {
   const [openedCategory, setOpenedCategory] = useState<string | null>(null);
 
-  const profilesPanelRef = useRef<HTMLDivElement | null>(null);
-  const activeDirectionRef = useRef<HTMLButtonElement | null>(null);
+const profilesPanelRef = useRef<HTMLDivElement | null>(null);
+const directionRefs = useRef<Record<string, HTMLButtonElement | null>>({});
 
   const categories =
     level === "bachelor" ? bachelorCategories : masterCategories;
@@ -124,44 +124,46 @@ function StartScreen({
     ? getCategoryPrograms(programs, selectedCategory)
     : [];
 
-  const scrollToProfilesPanelOnMobile = () => {
-    const isMobile = window.matchMedia("(max-width: 760px)").matches;
+const scrollToProfilesPanel = () => {
+  window.setTimeout(() => {
+    profilesPanelRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  }, 120);
+};
 
-    if (!isMobile) {
-      return;
-    }
+const scrollToDirectionCard = (categoryTitle: string) => {
+  window.setTimeout(() => {
+    directionRefs.current[categoryTitle]?.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+    });
+  }, 120);
+};
 
-    setTimeout(() => {
-      profilesPanelRef.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }, 120);
-  };
+const toggleCategory = (categoryTitle: string) => {
+  const isClosing = openedCategory === categoryTitle;
 
-  const toggleCategory = (categoryTitle: string) => {
-    const nextCategory =
-      openedCategory === categoryTitle ? null : categoryTitle;
+  setOpenedCategory(isClosing ? null : categoryTitle);
 
-    setOpenedCategory(nextCategory);
+  if (isClosing) {
+    scrollToDirectionCard(categoryTitle);
+    return;
+  }
 
-    if (nextCategory) {
-      scrollToProfilesPanelOnMobile();
-    }
-  };
+  scrollToProfilesPanel();
+};
 
-  const closeProfilesPanel = () => {
-    const directionElement = activeDirectionRef.current;
+const closeProfilesPanel = () => {
+  const categoryTitle = openedCategory;
 
-    setOpenedCategory(null);
+  setOpenedCategory(null);
 
-    setTimeout(() => {
-      directionElement?.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-      });
-    }, 120);
-  };
+  if (categoryTitle) {
+    scrollToDirectionCard(categoryTitle);
+  }
+};
 
   return (
     <div className="container start-screen program-start-screen">
@@ -215,7 +217,9 @@ function StartScreen({
             return (
               <button
                 type="button"
-                ref={isActive ? activeDirectionRef : null}
+                ref={(element) => {
+                  directionRefs.current[category.title] = element;
+                }}
                 className={`direction-card ${isActive ? "active" : ""}`}
                 key={category.title}
                 onClick={() => toggleCategory(category.title)}

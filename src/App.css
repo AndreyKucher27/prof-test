@@ -556,6 +556,10 @@ button {
   font-size: 13px;
 }
 
+.direction-card,
+.profiles-panel-modern {
+  scroll-margin-top: 24px;
+}
 
 /* =========================================================
    PROFILE PANEL
